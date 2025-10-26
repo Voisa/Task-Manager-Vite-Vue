@@ -16,17 +16,21 @@
 import TaskItem from "./components/TaskItem.vue";
 
 const tasks = [
-  { id: "1", title: "Купить продукты", text: "Молоко, хлеб, яйца" },
-  { id: "2", title: "Закончить проект", text: "Доделать UI и отправить на ревью" },
-  { id: "3", title: "Позвонить другу", text: "Договориться о встрече" },
+  { id: "1", title: "Убраться", text: "Вынести мусор, помыть пол" },
+  { id: "2", title: "ДЗ по Веб", text: "Создать веб приложение на vue" },
+  { id: "3", title: "Отдых", text: "Зайти в SCX, Освоить touchdesign" },
 ];
 </script>
 
 <style>
+body {
+  margin: 0;
+}
+
 .container {
   max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 0;
+  padding: 0; /* remove padding so header sits at exact top-left */
 }
 
 .tasks {
@@ -34,4 +38,4 @@ const tasks = [
   flex-direction: column;
   gap: 16px;
 }
-</style>
+</style> 
