@@ -1,9 +1,6 @@
 <template>
   <div class="tasks-board">
     <div class="top-row">
-      <div class="week-filter-wrap">
-        <WeekFilter v-model:modelValue="selectedDay" />
-      </div>
       <!-- Панель бейджей статуса (фиксируется в правом верхнем углу) -->
       <div class="status-badges" aria-hidden>
         <div class="badge not-done">Не выполнено: <span class="count">{{ notDone.length }}</span></div>
@@ -50,7 +47,6 @@
 import { computed } from 'vue';
 import type { Task } from '../data/tasks';
 import TaskItem from './TaskItem.vue';
-import WeekFilter from './WeekFilter.vue';
 
 // Props: массив задач и (опционально) выбранный день (v-model).
 // Компонент представления — он не мутирует задачи напрямую, а испускает события вверх при действиях.
