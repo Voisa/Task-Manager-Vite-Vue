@@ -31,6 +31,8 @@
           <button type="button" @click="saveEdit">Сохранить</button>
           <button type="button" @click="cancelEdit">Отменить</button>
         </div>
+        <!-- Кнопка удаления задачи -->
+        <button type="button" @click.prevent="emit('delete', props.task.id)">Удалить</button>
       </div>
     </main>
   </div>
@@ -41,7 +43,7 @@ import { ref } from 'vue';
 import type { Task } from '../data/tasks';
 
 const props = defineProps<{ task: Task }>();
-const emit = defineEmits<{ (e: 'update', payload: Task): void; (e: 'toggle-done', id: string): void }>();
+const emit = defineEmits<{ (e: 'update', payload: Task): void; (e: 'toggle-done', id: string): void; (e: 'delete', id: string): void }>();
 
 // Используем централизованное поле `done`, хранящееся в объекте задачи.
 // При переключении испускаем событие, чтобы родитель обновил общий массив задач.
@@ -80,7 +82,7 @@ function saveEdit() {
 <style>
 .task-card {
   border: 5px solid #000000;
-  padding: 16px;
+  padding: 32px;
   border-radius: 8px;
   background-color: #b63636;
   position: relative; /* необходимо для абсолютного позиционирования кнопок */

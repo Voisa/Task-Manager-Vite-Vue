@@ -10,6 +10,7 @@
           :task="task"
           @toggle-done="onToggleDone"
           @update="onUpdate"
+          @delete="onDelete"
         />
       </div>
     </section>
@@ -24,6 +25,7 @@
           :task="task"
           @toggle-done="onToggleDone"
           @update="onUpdate"
+          @delete="onDelete"
         />
       </div>
     </section>
@@ -38,7 +40,7 @@ import TaskItem from './TaskItem.vue';
 // Props: массив задач, переданный от родителя. Компонент представления — он не
 // мутирует задачи напрямую, а испускает события вверх при действиях.
 const props = defineProps<{ tasks: Task[] }>();
-const emit = defineEmits<{ (e: 'toggle-done', id: string): void; (e: 'update', task: Task): void }>();
+const emit = defineEmits<{ (e: 'toggle-done', id: string): void; (e: 'update', task: Task): void; (e: 'delete', id: string): void }>();
 
 // Вычисляемые списки разделяют задачи по флагу done.
 const notDone = computed(() => props.tasks.filter(t => !t.done));
@@ -50,6 +52,10 @@ function onToggleDone(id: string) {
 
 function onUpdate(task: Task) {
   emit('update', task);
+}
+
+function onDelete(id: string) {
+  emit('delete', id);
 }
 </script>
 

@@ -8,6 +8,7 @@
         :tasks="tasks"
         @toggle-done="toggleDone"
         @update="updateTask"
+        @delete="deleteTask"
       />
     </div>
     <p v-if="tasks.length === 0">Список дел пуст</p>
@@ -15,31 +16,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import AddTaskForm from "./components/AddTaskForm.vue";
 import TasksBoard from "./components/TasksBoard.vue";
-import { initialTasks, type Task } from './data/tasks';
+import { useTasks } from './composables/useTasks';
 
-const tasks = ref<Task[]>([ ...initialTasks ]);
-
-function createTask(payload: { title: string; text: string }) {
-  const id = Date.now().toString();
-  tasks.value.unshift({ id, title: payload.title, text: payload.text });
-}
-
-function toggleDone(id: string) {
-  const i = tasks.value.findIndex(t => t.id === id);
-  const task = tasks.value[i];
-  if (task) task.done = !task.done;
-}
-
-function updateTask(updated: Task) {
-  const i = tasks.value.findIndex(t => t.id === updated.id);
-  if (i !== -1) {
-    // заменить поля, сохраняя остальные свойства
-    tasks.value[i] = { ...tasks.value[i], ...updated };
-  }
-}
+// Используем composable для управления задачами и их персистентности
+const { tasks, createTask, toggleDone, updateTask, deleteTask } = useTasks();
 </script>
 
 <style>
