@@ -1,34 +1,48 @@
+/* src/style.css */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #000000;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  background-image: url('src/assets/bg5.jpg'); /* Укажите путь к вашей картинке */
-  background-position: center; /* Центрирует изображение */
-  background-repeat: no-repeat; /* Отключает повторение изображения */
 }
 
-a { 
+[data-theme='dark'] {
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #000000;
+  background-image: url('src/assets/bg8.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+ /* Добавлено для корректного отображения фона */
+}
+
+[data-theme='light'] {
+  color: #213547;
+  background-color: #ffffff;
+  background-image: url('src/assets/bg7.jpg'); /* Укажите путь к фону для светлой темы */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
 
+[data-theme='light'] a:hover {
+  color: #747bff;
+}
+
 body {
   margin: 0;
-  /* Используем нормальный поток документа, чтобы содержимое страницы по умолчанию располагалось в левом верхнем углу */
   min-width: 320px;
   min-height: 100vh;
 }
@@ -49,9 +63,15 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
+[data-theme='light'] button {
+  background-color: #f9f9f9;
+}
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -63,21 +83,7 @@ button:focus-visible {
 
 #app {
   max-width: 1280px;
-  margin: 0; /* держать контент слева */
+  margin: 0;
   padding: 2rem;
   text-align: left;
 }
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-

@@ -1,12 +1,13 @@
+<!-- src/App.vue -->
 <template>
   <div class="container">
+    <ThemeToggle />
     <h1>Список дел</h1>
     <AddTaskForm @create="createTask" />
     <div class="lifted-week-filter">
       <WeekFilter v-model:modelValue="selectedDay" />
     </div>
     <div class="tasks">
-    <!-- TasksBoard отображает две колонки: не выполненные и выполненные. Он испускает события вверх. -->
       <TasksBoard
         :tasks="tasks"
         v-model:modelValue="selectedDay"
@@ -20,9 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import AddTaskForm from "./components/AddTaskForm.vue";
-import TasksBoard from "./components/TasksBoard.vue";
+import AddTaskForm from './components/AddTaskForm.vue';
+import TasksBoard from './components/TasksBoard.vue';
 import WeekFilter from './components/WeekFilter.vue';
+import ThemeToggle from './components/ThemeToggle.vue'; // Импорт компонента
 import { useTasks } from './composables/useTasks';
 import { ref } from 'vue';
 
@@ -38,7 +40,7 @@ body {
 .container {
   max-width: 600px;
   margin: 0;
-  padding: 0; /* убираем отступ, чтобы заголовок был прямо в левом верхнем углу */
+  padding: 0;
 }
 
 .tasks {
@@ -48,7 +50,7 @@ body {
 }
 
 .lifted-week-filter {
-  margin-top: -49px; /* поднимаем чуть выше, к уровню кнопки */
+  margin-top: -49px;
   margin-bottom: 6px;
 }
 
@@ -57,4 +59,4 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-</style> 
+</style>
