@@ -48,7 +48,7 @@ body {
 }
 
 .lifted-week-filter {
-  margin-top: -8px; /* поднимаем чуть выше, к уровню кнопки */
+  margin-top: -49px; /* поднимаем чуть выше, к уровню кнопки */
   margin-bottom: 6px;
 }
 

@@ -5,15 +5,19 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #000000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: url('src/assets/bg5.jpg'); /* Укажите путь к вашей картинке */
+  background-position: center; /* Центрирует изображение */
+  background-repeat: no-repeat; /* Отключает повторение изображения */
 }
 
-a {
+a { 
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
@@ -76,3 +80,4 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
