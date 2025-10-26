@@ -1,11 +1,13 @@
 <template>
   <div class="container">
     <h1>Список дел</h1>
+    <AddTaskForm @create="createTask" />
     <div class="tasks">
-      <TaskItem
-        v-for="task in tasks"
-        :key="task.id"
-        :task="task"
+    <!-- TasksBoard отображает две колонки: не выполненные и выполненные. Он испускает события вверх. -->
+      <TasksBoard
+        :tasks="tasks"
+        @toggle-done="toggleDone"
+        @update="updateTask"
       />
     </div>
     <p v-if="tasks.length === 0">Список дел пуст</p>
@@ -13,13 +15,31 @@
 </template>
 
 <script setup lang="ts">
-import TaskItem from "./components/TaskItem.vue";
+import { ref } from 'vue';
+import AddTaskForm from "./components/AddTaskForm.vue";
+import TasksBoard from "./components/TasksBoard.vue";
+import { initialTasks, type Task } from './data/tasks';
 
-const tasks = [
-  { id: "1", title: "Убраться", text: "Вынести мусор, помыть пол" },
-  { id: "2", title: "ДЗ по Веб", text: "Создать веб приложение на vue" },
-  { id: "3", title: "Отдых", text: "Зайти в SCX, Освоить touchdesign" },
-];
+const tasks = ref<Task[]>([ ...initialTasks ]);
+
+function createTask(payload: { title: string; text: string }) {
+  const id = Date.now().toString();
+  tasks.value.unshift({ id, title: payload.title, text: payload.text });
+}
+
+function toggleDone(id: string) {
+  const i = tasks.value.findIndex(t => t.id === id);
+  const task = tasks.value[i];
+  if (task) task.done = !task.done;
+}
+
+function updateTask(updated: Task) {
+  const i = tasks.value.findIndex(t => t.id === updated.id);
+  if (i !== -1) {
+    // заменить поля, сохраняя остальные свойства
+    tasks.value[i] = { ...tasks.value[i], ...updated };
+  }
+}
 </script>
 
 <style>
@@ -30,7 +50,7 @@ body {
 .container {
   max-width: 600px;
   margin: 0;
-  padding: 0; /* remove padding so header sits at exact top-left */
+  padding: 0; /* убираем отступ, чтобы заголовок был прямо в левом верхнем углу */
 }
 
 .tasks {

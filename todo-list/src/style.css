@@ -24,7 +24,7 @@ a:hover {
 
 body {
   margin: 0;
-  /* Use normal document flow so page content sits at top-left by default */
+  /* Используем нормальный поток документа, чтобы содержимое страницы по умолчанию располагалось в левом верхнем углу */
   min-width: 320px;
   min-height: 100vh;
 }
@@ -59,7 +59,7 @@ button:focus-visible {
 
 #app {
   max-width: 1280px;
-  margin: 0; /* keep content at left */
+  margin: 0; /* держать контент слева */
   padding: 2rem;
   text-align: left;
 }
