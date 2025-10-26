@@ -89,10 +89,14 @@ function saveEdit() {
 <style>
 .task-card {
   border: 5px solid #000000;
-  padding: 32px 32px 56px 32px; /* дополнительный нижний отступ, чтобы кнопки не перекрывали текст */
+  padding: 24px; /* более компактный внутренний отступ */
   border-radius: 8px;
   background-color: #b63636;
   position: relative; /* необходимо для абсолютного позиционирования кнопок */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 220px; /* одинаковая минимальная высота карточки */
 }
 
 .task-card header {
@@ -134,6 +138,14 @@ function saveEdit() {
   margin: 0;
   color: #000000;
   font-weight: 750;
+}
+
+.task-card main {
+  /* main занимет оставшееся пространство, чтобы карточки выравнивались по высоте */
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 button {

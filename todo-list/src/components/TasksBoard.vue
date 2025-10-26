@@ -1,40 +1,48 @@
 <template>
   <div class="tasks-board">
-    <WeekFilter v-model:modelValue="selectedDay" />
-    <!-- Панель бейджей статуса (фиксируется в правом верхнем углу) -->
-    <div class="status-badges" aria-hidden>
-  <div class="badge not-done">Не выполнено: <span class="count">{{ notDone.length }}</span></div>
-  <div class="badge done">Выполнено: <span class="count">{{ done.length }}</span></div>
+    <div class="top-row">
+      <div class="week-filter-wrap">
+        <WeekFilter v-model:modelValue="selectedDay" />
+      </div>
+      <!-- Панель бейджей статуса (фиксируется в правом верхнем углу) -->
+      <div class="status-badges" aria-hidden>
+        <div class="badge not-done">Не выполнено: <span class="count">{{ notDone.length }}</span></div>
+        <div class="badge done">Выполнено: <span class="count">{{ done.length }}</span></div>
+      </div>
     </div>
-  <!-- Левая колонка: невыполненные задачи -->
-    <section class="column">
-      <h2 class="visually-hidden">Не выполненные</h2>
-      <div class="list">
-        <TaskItem
-          v-for="task in notDoneFiltered"
-          :key="task.id"
-          :task="task"
-          @toggle-done="onToggleDone"
-          @update="onUpdate"
-          @delete="onDelete"
-        />
-      </div>
-    </section>
 
-  <!-- Правая колонка: выполненные задачи -->
-    <section class="column">
-      <h2 class="visually-hidden">Выполненные</h2>
-      <div class="list">
-        <TaskItem
-          v-for="task in doneFiltered"
-          :key="task.id"
-          :task="task"
-          @toggle-done="onToggleDone"
-          @update="onUpdate"
-          @delete="onDelete"
-        />
-      </div>
-    </section>
+    <div class="rows-grid">
+      <!-- Рендерим строки: каждая строка содержит левую (неготовые) и правую (готовые) ячейки -->
+      <template v-if="rowCount > 0">
+        <template v-for="i in rowCount" :key="i">
+          <div class="cell">
+            <template v-if="notDoneFiltered[i - 1]">
+              <TaskItem
+                :key="'left-' + (notDoneFiltered[i - 1]?.id)"
+                :task="notDoneFiltered[i - 1] as any"
+                @toggle-done="onToggleDone"
+                @update="onUpdate"
+                @delete="onDelete"
+              />
+            </template>
+            <div v-else class="empty-slot"></div>
+          </div>
+
+          <div class="cell">
+            <template v-if="doneFiltered[i - 1]">
+              <TaskItem
+                :key="'right-' + (doneFiltered[i - 1]?.id)"
+                :task="doneFiltered[i - 1] as any"
+                @toggle-done="onToggleDone"
+                @update="onUpdate"
+                @delete="onDelete"
+              />
+            </template>
+            <div v-else class="empty-slot"></div>
+          </div>
+        </template>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -85,6 +93,9 @@ function filterByDay(list: Task[]) {
 const notDoneFiltered = computed(() => filterByDay(notDone.value));
 const doneFiltered = computed(() => filterByDay(done.value));
 
+// Количество строк — максимум из длин двух списков
+const rowCount = computed(() => Math.max(notDoneFiltered.value.length, doneFiltered.value.length));
+
 function onToggleDone(id: string) {
   emit('toggle-done', id);
 }
@@ -100,8 +111,21 @@ function onDelete(id: string) {
 
 <style>
 .tasks-board {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rows-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(220px, auto); /* ensure rows have a consistent minimum height */
   gap: 18px;
 }
 .column {
@@ -116,6 +140,29 @@ function onDelete(id: string) {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.cell {
+  display: flex;
+  align-items: stretch;
+}
+
+.cell .task-card {
+  width: 100%;
+  /* make task card fill the cell height */
+  min-height: 0; /* allow flex to control height */
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-slot {
+  width: 100%;
+}
+
+.week-filter-wrap {
+  grid-column: 1 / -1; /* span both columns so tasks start on the next row */
+  align-self: start;
+  padding-right: 8px; /* small spacing to the right so it won't touch the column edge */
 }
 
 .week-filter {

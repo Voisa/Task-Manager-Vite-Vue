@@ -2,10 +2,14 @@
   <div class="container">
     <h1>Список дел</h1>
     <AddTaskForm @create="createTask" />
+    <div class="lifted-week-filter">
+      <WeekFilter v-model:modelValue="selectedDay" />
+    </div>
     <div class="tasks">
     <!-- TasksBoard отображает две колонки: не выполненные и выполненные. Он испускает события вверх. -->
       <TasksBoard
         :tasks="tasks"
+        v-model:modelValue="selectedDay"
         @toggle-done="toggleDone"
         @update="updateTask"
         @delete="deleteTask"
@@ -18,9 +22,11 @@
 <script setup lang="ts">
 import AddTaskForm from "./components/AddTaskForm.vue";
 import TasksBoard from "./components/TasksBoard.vue";
+import WeekFilter from './components/WeekFilter.vue';
 import { useTasks } from './composables/useTasks';
+import { ref } from 'vue';
 
-// Используем composable для управления задачами и их персистентности
+const selectedDay = ref<'all' | string>('all');
 const { tasks, createTask, toggleDone, updateTask, deleteTask } = useTasks();
 </script>
 
@@ -39,5 +45,16 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.lifted-week-filter {
+  margin-top: -8px; /* поднимаем чуть выше, к уровню кнопки */
+  margin-bottom: 6px;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style> 
