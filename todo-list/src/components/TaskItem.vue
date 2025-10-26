@@ -8,7 +8,7 @@
         <input v-model="editTitle" />
       </div>
     </header>
-    <main>
+  <main>
       <div v-if="!editing">
         <p>{{ props.task.text }}</p>
       </div>
@@ -17,23 +17,17 @@
       </div>
 
       <div class="controls">
-        <button
-          type="button"
-          :class="{ done: props.task.done }"
-          @click="toggleDone"
-          :aria-pressed="props.task.done"
-        >
-          {{ props.task.done ? 'Выполнено' : 'Отметить' }}
-        </button>
-
-        <button type="button" @click="startEdit" v-if="!editing">Редактировать</button>
-        <div v-else>
+        <div v-if="editing">
           <button type="button" @click="saveEdit">Сохранить</button>
           <button type="button" @click="cancelEdit">Отменить</button>
         </div>
-        <!-- Кнопка удаления задачи -->
-        <button type="button" @click.prevent="emit('delete', props.task.id)">Удалить</button>
       </div>
+  <!-- Отдельная кнопка редактирования в правом верхнем углу -->
+  <button v-if="!editing" class="edit-btn" type="button" @click="startEdit" aria-label="Редактировать">✎</button>
+  <!-- Кнопка удаления в левом нижнем углу карточки -->
+  <button v-if="!editing" class="delete-btn" type="button" @click.prevent="emit('delete', props.task.id)" aria-label="Удалить">🗑</button>
+  <!-- Кнопка состояния (Done) в правом нижнем углу карточки -->
+  <button v-if="!editing" class="done-btn" type="button" :class="{ done: props.task.done }" @click.prevent="toggleDone" :aria-pressed="props.task.done">{{ props.task.done ? '✖' : '✔' }}</button>
     </main>
   </div>
 </template>
@@ -82,7 +76,7 @@ function saveEdit() {
 <style>
 .task-card {
   border: 5px solid #000000;
-  padding: 32px;
+  padding: 32px 32px 56px 32px; /* дополнительный нижний отступ, чтобы кнопки не перекрывали текст */
   border-radius: 8px;
   background-color: #b63636;
   position: relative; /* необходимо для абсолютного позиционирования кнопок */
@@ -131,10 +125,90 @@ button.done:hover {
   bottom: 12px;
   display: flex;
   gap: 8px;
+  background: rgba(0,0,0,0.25); /* полупрозрачный фон, чтобы кнопки читались на фоне */
+  padding: 6px 10px;
+  border-radius: 8px;
+  z-index: 5; /* поверх содержимого карточки */
 }
 
 .task-card .controls button {
   /* slightly smaller controls in corner */
   padding: 6px 10px;
+}
+
+/* маленькая кнопка редактирования в правом верхнем углу */
+.task-card .edit-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px; /* маленькая квадратичная кнопка */
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: 1px solid transparent;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.task-card .edit-btn:hover {
+  background: rgba(0,0,0,0.75);
+}
+
+/* маленькая кнопка удаления в левом нижнем углу */
+.task-card .delete-btn {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: 1px solid transparent;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.task-card .delete-btn:hover {
+  background: rgba(0,0,0,0.75);
+}
+
+/* кнопка 'готово' в правом нижнем углу */
+.task-card .done-btn {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 34px;
+  height: 34px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: 1px solid transparent;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.task-card .done-btn.done {
+  background-color: #28a745; /* зелёный когда выполнено */
+  border-color: #1f7a2e;
+}
+
+.task-card .done-btn:hover {
+  background: rgba(0,0,0,0.75);
 }
 </style>
