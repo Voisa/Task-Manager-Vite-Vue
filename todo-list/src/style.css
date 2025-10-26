@@ -13,7 +13,7 @@
 [data-theme='dark'] {
   color: rgba(255, 255, 255, 0.87);
   background-color: #000000;
-  background-image: url('src/assets/bg8.webp');
+  background-image: url('/public/bg8.webp');
   background-position: center;
   background-repeat: no-repeat;
  /* Добавлено для корректного отображения фона */
@@ -22,7 +22,7 @@
 [data-theme='light'] {
   color: #213547;
   background-color: #ffffff;
-  background-image: url('src/assets/bg7.jpg'); /* Укажите путь к фону для светлой темы */
+  background-image: url('/public/bg7.jpg'); /* Укажите путь к фону для светлой темы */
   background-position: center;
   background-repeat: no-repeat;
 }
