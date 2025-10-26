@@ -41,9 +41,9 @@ loadTasks();
 watch(tasks, scheduleSave, { deep: true });
 
 // Функции управления задачами — возвращаем из composable
-function createTask(payload: { title: string; text: string }) {
+function createTask(payload: { title: string; text: string; day?: string | null }) {
   const id = Date.now().toString();
-  tasks.value.unshift({ id, title: payload.title, text: payload.text, done: false });
+  tasks.value.unshift({ id, title: payload.title, text: payload.text, done: false, day: payload.day ?? null });
 }
 
 function toggleDone(id: string) {

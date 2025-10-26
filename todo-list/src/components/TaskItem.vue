@@ -1,8 +1,9 @@
 <template>
-  <div class="task-card">
+  <div :class="['task-card', { 'no-day': props.task.day == null }]">
     <header>
-      <div v-if="!editing">
+      <div v-if="!editing" class="title-row">
         <h3>{{ props.task.title }}</h3>
+        <span class="day-badge">{{ dayLabel }}</span>
       </div>
       <div v-else>
         <input v-model="editTitle" />
@@ -38,6 +39,18 @@ import type { Task } from '../data/tasks';
 
 const props = defineProps<{ task: Task }>();
 const emit = defineEmits<{ (e: 'update', payload: Task): void; (e: 'toggle-done', id: string): void; (e: 'delete', id: string): void }>();
+
+const dayMap: Record<string, string> = {
+  mon: 'Пн',
+  tue: 'Вт',
+  wed: 'Ср',
+  thu: 'Чт',
+  fri: 'Пт',
+  sat: 'Сб',
+  sun: 'Вс',
+};
+
+const dayLabel = props.task.day ? (dayMap[props.task.day] ?? props.task.day) : 'Без дня';
 
 // Используем централизованное поле `done`, хранящееся в объекте задачи.
 // При переключении испускаем событие, чтобы родитель обновил общий массив задач.
@@ -86,10 +99,35 @@ function saveEdit() {
   margin-bottom: 8px;
 }
 
+.task-card .title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-card .day-badge {
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
 .task-card h3 {
   margin: 0;
   color: #ffffff;
   font-size: 1.5em;
+}
+
+/* стиль для задач без привязки к дню — синий фон */
+.task-card.no-day {
+  background-color: #1f6fe0; /* яркий синий */
+}
+
+.task-card.no-day p,
+.task-card.no-day h3 {
+  color: #ffffff;
 }
 
 .task-card p {

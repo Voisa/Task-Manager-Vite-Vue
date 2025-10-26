@@ -2,6 +2,16 @@
   <form class="add-task" @submit.prevent="onSubmit">
     <input v-model="title" placeholder="Заголовок" required />
     <textarea v-model="text" placeholder="Описание (опционально)"></textarea>
+    <select v-model="day">
+      <option value="">Без дня</option>
+      <option value="mon">Пн</option>
+      <option value="tue">Вт</option>
+      <option value="wed">Ср</option>
+      <option value="thu">Чт</option>
+      <option value="fri">Пт</option>
+      <option value="sat">Сб</option>
+      <option value="sun">Вс</option>
+    </select>
     <div class="actions">
       <button type="submit">Добавить задачу</button>
     </div>
@@ -10,18 +20,20 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-const emit = defineEmits<(e: 'create', payload: { title: string; text: string }) => void>();
+const emit = defineEmits<(e: 'create', payload: { title: string; text: string; day?: string | null }) => void>();
 
 const title = ref('');
 const text = ref('');
+const day = ref('');
 
 function onSubmit() {
   const t = title.value.trim();
   const tx = text.value.trim();
   if (!t) return;
-  emit('create', { title: t, text: tx });
+  emit('create', { title: t, text: tx, day: day.value || null });
   title.value = '';
   text.value = '';
+  day.value = '';
 }
 </script>
 
